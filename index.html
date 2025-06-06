@@ -3,194 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heat Exchangers and Heat Exchanger Networks</title>
+    <title>Technical Guide to Heat Exchangers & Networks</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
+            margin: 0;
+            background-color: #f8f9fa;
+            color: #212529;
         }
-        h1, h2, h3 {
-            color: #0056b3;
+        .navbar {
+            background-color: #004b8d;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        .navbar a:hover {
+            background-color: #0069d9;
+        }
+        .container {
+            padding: 80px 40px 20px 40px; /* Adjust padding for fixed navbar */
+            max-width: 1200px;
+            margin: auto;
         }
         .section {
-            background-color: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
+            background-color: #ffffff;
+            padding: 25px;
+            margin-bottom: 25px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            scroll-margin-top: 70px; /* Offset for anchor links */
         }
-        .interactive-diagram {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
+        h1, h2, h3 {
+            color: #004b8d;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+        .interactive-tool {
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .input-group { margin-bottom: 15px; }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        .input-group input, .input-group select {
+            width: 95%;
+            padding: 8px;
             border-radius: 4px;
-            position: relative; /* For potential absolute positioning of interactive elements */
+            border: 1px solid #ced4da;
         }
-        .quiz-question {
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background-color: #0056b3; }
+        .results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e2e3e5;
+            border-left: 5px solid #007bff;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #e9ecef;
+        }
+        /* SVG styles */
+        .hx-component {
+            fill-opacity: 0.1;
+            stroke-width: 2;
+            transition: fill-opacity 0.3s;
+        }
+        .hx-component:hover {
+            fill-opacity: 0.5;
+            cursor: pointer;
+        }
+        #info-box {
             margin-top: 15px;
             padding: 10px;
-            border: 1px solid #ddd;
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
             border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-        .quiz-answer {
-            display: none;
-            margin-top: 5px;
-            padding: 8px;
-            border-left: 3px solid #5cb85c;
-            background-color: #e6ffe6;
-            border-radius: 0 4px 4px 0;
-        }
-        .correct-answer {
-            color: green;
-        }
-        .incorrect-answer {
-            color: red;
-        }
-        .show {
-            display: block;
-        }
-        .resource-link {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .resource-link:hover {
-            text-decoration: underline;
-        }
-        /* Basic styling for potential interactive elements */
-        .clickable {
-            cursor: pointer;
-            font-weight: bold;
-            color: #007bff;
+            display: none; /* Hidden by default */
         }
     </style>
 </head>
 <body>
-    <h1>Heat Exchangers and Heat Exchanger Networks</h1>
 
-    <div class="section">
-        <h2>Part 1: Heat Exchangers</h2>
-        <p>Heat exchangers are devices used to transfer thermal energy (heat) between two or more fluids without allowing them to mix. They are crucial components in many chemical processes for heating, cooling, condensation, and vaporization.</p>
+<div class="navbar">
+    <span>Process Design Hub: Heat Exchange</span>
+    <div>
+        <a href="#s-and-t">S&T Exchanger</a>
+        <a href="#calculators">Calculators</a>
+        <a href="#pinch-analysis">Pinch Analysis</a>
+    </div>
+</div>
 
-        <h3>Common Types of Heat Exchangers</h3>
-        <ul>
-            <li><strong>Shell-and-Tube Heat Exchangers:</strong> The most common type, consisting of a bundle of tubes within a cylindrical shell. One fluid flows through the tubes, and the other flows over the tubes within the shell. <span class="clickable" onclick="showDescription('shell_tube')">[Learn More]</span></li>
-            <li id="shell_tube_desc" style="display:none;">Shell-and-tube exchangers are robust and can handle high pressures and temperatures. They are relatively easy to clean mechanically. <a href="https://en.wikipedia.org/wiki/Shell_and_tube_heat_exchanger" target="_blank" class="resource-link">Wikipedia</a></li>
-            <li><strong>Plate Heat Exchangers:</strong> Consist of a series of thin, corrugated metal plates packed together. Fluids flow between the plates, allowing for efficient heat transfer due to the large surface area and turbulent flow. <span class="clickable" onclick="showDescription('plate')">[Learn More]</span></li>
-            <li id="plate_desc" style="display:none;">Plate exchangers are compact and offer high heat transfer coefficients. They are often used in applications with clean fluids. <a href="https://en.wikipedia.org/wiki/Plate_heat_exchanger" target="_blank" class="resource-link">Wikipedia</a></li>
-            <li><strong>Double Pipe Heat Exchangers:</strong> The simplest form, with one pipe placed concentrically inside another. One fluid flows through the inner pipe, and the other flows in the annulus between the pipes. <span class="clickable" onclick="showDescription('double_pipe')">[Learn More]</span></li>
-            <li id="double_pipe_desc" style="display:none;">Double pipe exchangers are suitable for small heat transfer areas and can handle high pressures. <a href="https://www.thermopedia.com/content/765/" target="_blank" class="resource-link">Thermopedia</a></li>
-            <li><strong>Air-Cooled Heat Exchangers:</strong> Use ambient air to cool a process fluid flowing through finned tubes. A fan forces air across the tubes to remove heat. <span class="clickable" onclick="showDescription('air_cooled')">[Learn More]</span></li>
-            <li id="air_cooled_desc" style="display:none;">Air-cooled exchangers are used when water is scarce or cooling water treatment is costly. <a href="https://en.wikipedia.org/wiki/Air-cooled_heat_exchanger" target="_blank" class="resource-link">Wikipedia</a></li>
-        </ul>
+<div class="container">
+    <div id="s-and-t" class="section">
+        <h2>Interactive Shell-and-Tube Heat Exchanger</h2>
+        <p>This is the workhorse of the chemical industry. One fluid flows through a bundle of tubes, while another fluid flows in the shell over the tubes. Click on the components in the diagram below to learn more about their function.</p>
+        
+        <svg id="s_t_exchanger" viewBox="0 0 800 300" style="width:100%; height:auto;">
+            <rect id="shell" class="hx-component" x="50" y="50" width="700" height="200" rx="20" ry="20" stroke="#343a40" fill="#adb5bd"/>
+            <rect id="baffle1" class="hx-component" x="200" y="50" width="10" height="200" stroke="#6c757d" fill="#6c757d"/>
+            <rect id="baffle2" class="hx-component" x="350" y="50" width="10" height="200" stroke="#6c757d" fill="#6c757d"/>
+            <rect id="baffle3" class="hx-component" x="500" y="50" width="10" height="200" stroke="#6c757d" fill="#6c757d"/>
+            <rect id="baffle4" class="hx-component" x="650" y="50" width="10" height="200" stroke="#6c757d" fill="#6c757d"/>
+            <g id="tubes" class="hx-component" stroke="#007bff">
+                <line x1="50" y1="110" x2="750" y2="110" stroke-width="4"/>
+                <line x1="50" y1="130" x2="750" y2="130" stroke-width="4"/>
+                <line x1="50" y1="150" x2="750" y2="150" stroke-width="4"/>
+                <line x1="50" y1="170" x2="750" y2="170" stroke-width="4"/>
+                <line x1="50" y1="190" x2="750" y2="190" stroke-width="4"/>
+            </g>
+            <rect id="inlet_head" class="hx-component" x="10" y="40" width="40" height="220" rx="10" ry="10" stroke="#343a40" fill="#adb5bd"/>
+            <rect id="outlet_head" class="hx-component" x="750" y="40" width="40" height="220" rx="10" ry="10" stroke="#343a40" fill="#adb5bd"/>
+            <text x="75" y="40" font-size="16">Shell Inlet</text>
+            <text x="650" y="280" font-size="16">Shell Outlet</text>
+            <text x="15" y="35" font-size="16">Tube Inlet</text>
+            <text x="730" y="35" font-size="16">Tube Outlet</text>
+        </svg>
 
-        <h3>Interactive Diagram: Shell-and-Tube Heat Exchanger</h3>
-        <div class="interactive-diagram">
-            <p><em>(Interactive diagram of a shell-and-tube heat exchanger will be placed here. Students should be able to hover over or click on components like the shell, tubes, baffles, inlet/outlet ports to see descriptions.)</em></p>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Shell_and_tube_heat_exchanger.svg/800px-Shell_and_tube_heat_exchanger.svg.png" alt="Shell and Tube Heat Exchanger Diagram" width="600">
-            <p style="font-size: small; color: #777;">(Static image as a placeholder for the interactive version)</p>
+        <div id="info-box">Select a component to see its description.</div>
+    </div>
+
+    <div id="calculators" class="section">
+        <h2>Design Calculators</h2>
+        <h3>Log Mean Temperature Difference (LMTD) Calculator</h3>
+        <p>The LMTD is the effective temperature driving force for heat transfer. For complex geometries like a 1-shell-pass, 2-tube-pass exchanger, an \(F_T\) correction factor is applied: \(\Delta T_{corrected} = F_T \cdot \Delta T_{LM, counter-current}\).</p>
+        <div class="interactive-tool">
+            <div class="grid-container">
+                <div>
+                    <h4>Hot Fluid</h4>
+                    <div class="input-group">
+                        <label for="th_in">Inlet Temperature (°C)</label>
+                        <input type="number" id="th_in" value="150">
+                    </div>
+                    <div class="input-group">
+                        <label for="th_out">Outlet Temperature (°C)</label>
+                        <input type="number" id="th_out" value="90">
+                    </div>
+                </div>
+                <div>
+                    <h4>Cold Fluid</h4>
+                    <div class="input-group">
+                        <label for="tc_in">Inlet Temperature (°C)</label>
+                        <input type="number" id="tc_in" value="40">
+                    </div>
+                    <div class="input-group">
+                        <label for="tc_out">Outlet Temperature (°C)</label>
+                        <input type="number" id="tc_out" value="80">
+                    </div>
+                </div>
             </div>
-
-        <h3>Fundamental Principles</h3>
-        <p>Heat transfer in exchangers primarily occurs through convection and conduction. The rate of heat transfer ($Q$) is governed by the overall heat transfer coefficient ($U$), the heat transfer area ($A$), and the log mean temperature difference ($\Delta T_{LM}$):</p>
-        <p style="text-align: center;">$Q = U \cdot A \cdot \Delta T_{LM}$</p>
-        <p>Understanding how to calculate these parameters is crucial for designing and analyzing heat exchangers.</p>
-
-        <div class="quiz-question">
-            <strong>Quick Quiz:</strong> What is the primary purpose of a heat exchanger?
-            <br>
-            <label><input type="radio" name="q1" value="a"> To mix two fluids.</label><br>
-            <label><input type="radio" name="q1" value="b"> To transfer heat between two fluids without mixing.</label><br>
-            <label><input type="radio" name="q1" value="c"> To increase the pressure of a fluid.</label><br>
-            <button onclick="checkAnswer('q1', 'b', 'answer1')">Check Answer</button>
-            <div id="answer1" class="quiz-answer"></div>
+            <button onclick="calculateLMTD()">Calculate LMTD</button>
+            <div id="lmtd_result" class="results" style="display:none;"></div>
         </div>
     </div>
 
-    <div class="section">
-        <h2>Part 2: Heat Exchanger Networks (HENs)</h2>
-        <p>A Heat Exchanger Network (HEN) is an integrated system of multiple heat exchangers designed to maximize energy recovery by transferring heat between different process streams. The goal is to reduce the utility (heating and cooling) requirements of the overall process, leading to significant cost savings and environmental benefits.</p>
-
-        <h3>The Concept of Energy Recovery</h3>
-        <p>In many chemical processes, some streams need to be cooled down while others need to be heated up. Instead of using external utilities (like steam or cooling water) for these tasks independently, a HEN aims to use the hot streams to heat the cold streams, and vice versa.</p>
-
-        <h3>Pinch Analysis</h3>
-        <p>Pinch analysis is a powerful methodology used to design and analyze HENs. It involves determining the "pinch point," which is the temperature at which the heat flow is most constrained. This helps in identifying the minimum utility requirements and designing an efficient network.</p>
-
-        <div class="interactive-diagram">
-            <p><em>(Interactive T-H diagram illustrating composite curves and the pinch point will be placed here. Students should be able to see how the minimum heating and cooling utilities are determined.)</em></p>
-            <img src="https://www.che.udel.edu/pdf/senior_design/fall07/ammonia/Figures/TH-diagram.png" alt="Temperature-Enthalpy Diagram" width="500">
-            <p style="font-size: small; color: #777;">(Static example of a T-H diagram)</p>
-            </div>
-
-        <h3>Benefits of Heat Exchanger Networks</h3>
-        <ul>
-            <li>Reduced energy consumption and utility costs.</li>
-            <li>Lower greenhouse gas emissions.</li>
-            <li>Improved process efficiency.</li>
-            <li>Better integration and understanding of the overall process.</li>
-        </ul>
-
-        <div class="quiz-question">
-            <strong>Quick Quiz:</strong> What is the primary goal of a Heat Exchanger Network (HEN)?
-            <br>
-            <label><input type="radio" name="q2" value="a"> To maximize the mixing of process streams.</label><br>
-            <label><input type="radio" name="q2" value="b"> To minimize the temperature difference in heat exchangers.</label><br>
-            <label><input type="radio" name="q2" value="c"> To maximize energy recovery and minimize utility usage.</label><br>
-            <button onclick="checkAnswer('q2', 'c', 'answer2')">Check Answer</button>
-            <div id="answer2" class="quiz-answer"></div>
+    <div id="pinch-analysis" class="section">
+        <h2>Heat Exchanger Networks (HENs) & Pinch Analysis</h2>
+        <p>Pinch Analysis is a powerful methodology for designing energy-efficient HENs. The goal is to determine the **Pinch Point**—the bottleneck for heat recovery—and the theoretical **Minimum Utility Requirements** (\(Q_{H,min}\) and \(Q_{C,min}\)). We use the **Problem Table Algorithm** for this.</p>
+        
+        <div class="interactive-tool">
+            <h3>Interactive Pinch Analysis Tool</h3>
+            <p>Enter your process streams below. The tool will apply the Problem Table Algorithm to find the pinch temperature and minimum utilities.</p>
+            <h4>Stream Data Input</h4>
+            <table id="stream_table">
+                <thead>
+                    <tr>
+                        <th>Stream Type</th>
+                        <th>Supply Temp (°C)</th>
+                        <th>Target Temp (°C)</th>
+                        <th>Heat Capacity Flowrate (CP) (kW/°C)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><select><option value="hot">Hot</option><option value="cold">Cold</option></select></td>
+                        <td><input type="number" value="250"></td>
+                        <td><input type="number" value="100"></td>
+                        <td><input type="number" value="10"></td>
+                        <td><button onclick="deleteRow(this)">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td><select><option value="hot">Hot</option><option value="cold" selected>Cold</option></select></td>
+                        <td><input type="number" value="80"></td>
+                        <td><input type="number" value="220"></td>
+                        <td><input type="number" value="8"></td>
+                        <td><button onclick="deleteRow(this)">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button onclick="addRow()">Add Stream</button>
+            <button onclick="runPinchAnalysis()">Run Pinch Analysis</button>
+            <div id="pinch_result" class="results" style="display:none;"></div>
         </div>
     </div>
 
-    <div class="section">
-        <h2>Further Resources</h2>
-        <ul>
-            <li><a href="https://www.cheresources.com/heattransfer.shtml" target="_blank" class="resource-link">Cheresources - Heat Transfer Engineering Resources</a></li>
-            <li>Your course materials and recommended textbooks (e.g., Towler & Sinnott, Seider et al.).</li>
-            <li>Online simulation tools (if applicable in your course).</li>
-        </ul>
-    </div>
+</div>
 
-    <script>
-        function showDescription(id) {
-            var desc = document.getElementById(id + "_desc");
-            if (desc.style.display === "none") {
-                desc.style.display = "block";
-            } else {
-                desc.style.display = "none";
-            }
+<script>
+    // --- S&T Exchanger Interactivity ---
+    const componentInfo = {
+        shell: "<strong>Shell:</strong> The outer casing that contains the shell-side fluid and the tube bundle. Designed to withstand the operating pressure.",
+        tubes: "<strong>Tubes:</strong> The primary surface for heat transfer. The tube-side fluid flows through these, transferring heat to or from the shell-side fluid.",
+        baffle1: "<strong>Baffles:</strong> Used to direct the shell-side fluid across the tube bundle in a zig-zag pattern. This increases the heat transfer coefficient and provides structural support for the tubes, preventing vibration.",
+        baffle2: "<strong>Baffles:</strong> Used to direct the shell-side fluid across the tube bundle in a zig-zag pattern. This increases the heat transfer coefficient and provides structural support for the tubes, preventing vibration.",
+        baffle3: "<strong>Baffles:</strong> Used to direct the shell-side fluid across the tube bundle in a zig-zag pattern. This increases the heat transfer coefficient and provides structural support for the tubes, preventing vibration.",
+        baffle4: "<strong>Baffles:</strong> Used to direct the shell-side fluid across the tube bundle in a zig-zag pattern. This increases the aheat transfer coefficient and provides structural support for the tubes, preventing vibration.",
+        inlet_head: "<strong>Inlet/Outlet Heads (Channels):</strong> Direct the flow of the tube-side fluid into and out of the tubes. Can be configured for single or multiple passes.",
+        outlet_head: "<strong>Inlet/Outlet Heads (Channels):</strong> Direct the flow of the tube-side fluid into and out of the tubes. Can be configured for single or multiple passes."
+    };
+
+    document.getElementById('s_t_exchanger').addEventListener('click', function(e) {
+        const id = e.target.closest('.hx-component')?.id;
+        const infoBox = document.getElementById('info-box');
+        if (id && componentInfo[id]) {
+            infoBox.innerHTML = componentInfo[id];
+            infoBox.style.display = 'block';
+        }
+    });
+
+    // --- LMTD Calculator ---
+    function calculateLMTD() {
+        const Th_in = parseFloat(document.getElementById('th_in').value);
+        const Th_out = parseFloat(document.getElementById('th_out').value);
+        const Tc_in = parseFloat(document.getElementById('tc_in').value);
+        const Tc_out = parseFloat(document.getElementById('tc_out').value);
+
+        if ([Th_in, Th_out, Tc_in, Tc_out].some(isNaN)) {
+            alert("Please enter valid numbers for all temperatures.");
+            return;
         }
 
-        function checkAnswer(questionId, correctOption, answerDivId) {
-            var radios = document.getElementsByName(questionId);
-            var answerDiv = document.getElementById(answerDivId);
-            var userAnswer = null;
+        // Counter-current flow
+        const deltaT1_counter = Th_in - Tc_out;
+        const deltaT2_counter = Th_out - Tc_in;
+        const lmtd_counter = (deltaT1_counter - deltaT2_counter) / Math.log(deltaT1_counter / deltaT2_counter);
 
-            for (var i = 0; i < radios.length; i++) {
-                if (radios [i].checked) {
-                    userAnswer = radios [i].value;
-                    break;
+        // Co-current flow
+        const deltaT1_co = Th_in - Tc_in;
+        const deltaT2_co = Th_out - Tc_out;
+        const lmtd_co = (deltaT1_co - deltaT2_co) / Math.log(deltaT1_co / deltaT2_co);
+
+        const resultDiv = document.getElementById('lmtd_result');
+        resultDiv.innerHTML = `Counter-Current LMTD: ${lmtd_counter.toFixed(2)} °C <br> Co-Current LMTD: ${lmtd_co.toFixed(2)} °C`;
+        resultDiv.style.display = 'block';
+    }
+
+    // --- Pinch Analysis Tool ---
+    function addRow() {
+        const tableBody = document.getElementById('stream_table').getElementsByTagName('tbody')[0];
+        const newRow = tableBody.insertRow();
+        newRow.innerHTML = `
+            <td><select><option value="hot">Hot</option><option value="cold">Cold</option></select></td>
+            <td><input type="number" placeholder="e.g., 200"></td>
+            <td><input type="number" placeholder="e.g., 100"></td>
+            <td><input type="number" placeholder="e.g., 5"></td>
+            <td><button onclick="deleteRow(this)">Delete</button></td>
+        `;
+    }
+
+    function deleteRow(btn) {
+        const row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+    function runPinchAnalysis() {
+        const table = document.getElementById('stream_table');
+        const streams = [];
+        const temperatures = new Set();
+        const deltaT_min = 10; // Common assumption for minimum approach temperature
+
+        for (let i = 1; i < table.rows.length; i++) {
+            const row = table.rows[i];
+            const type = row.cells[0].getElementsByTagName('select')[0].value;
+            const t_supply = parseFloat(row.cells[1].getElementsByTagName('input')[0].value);
+            const t_target = parseFloat(row.cells[2].getElementsByTagName('input')[0].value);
+            const cp = parseFloat(row.cells[3].getElementsByTagName('input')[0].value);
+
+            if ([t_supply, t_target, cp].some(isNaN)) continue;
+            
+            let t_supply_shifted, t_target_shifted;
+            if (type === 'hot') {
+                t_supply_shifted = t_supply - deltaT_min / 2;
+                t_target_shifted = t_target - deltaT_min / 2;
+            } else { // cold
+                t_supply_shifted = t_supply + deltaT_min / 2;
+                t_target_shifted = t_target + deltaT_min / 2;
+            }
+
+            streams.push({ type, t_supply, t_target, cp });
+            temperatures.add(t_supply_shifted);
+            temperatures.add(t_target_shifted);
+        }
+
+        const sortedTemps = Array.from(temperatures).sort((a, b) => b - a);
+        const intervals = [];
+        
+        for (let i = 0; i < sortedTemps.length - 1; i++) {
+            const t_high = sortedTemps[i];
+            const t_low = sortedTemps[i+1];
+            const t_mid = (t_high + t_low) / 2;
+            let sum_cp_hot = 0;
+            let sum_cp_cold = 0;
+
+            streams.forEach(s => {
+                let t_start_shifted = s.type === 'hot' ? s.t_supply - deltaT_min / 2 : s.t_supply + deltaT_min / 2;
+                let t_end_shifted = s.type === 'hot' ? s.t_target - deltaT_min / 2 : s.t_target + deltaT_min / 2;
+
+                if (s.type === 'hot' && t_mid > t_end_shifted && t_mid < t_start_shifted) {
+                    sum_cp_hot += s.cp;
                 }
-            }
+                if (s.type === 'cold' && t_mid > t_start_shifted && t_mid < t_end_shifted) {
+                    sum_cp_cold += s.cp;
+                }
+            });
 
-            if (userAnswer === correctOption) {
-                answerDiv.innerHTML = "<span class='correct-answer'>Correct!</span>";
-                answerDiv.classList.add("show");
-                answerDiv.classList.remove("incorrect-answer");
-            } else if (userAnswer) {
-                answerDiv.innerHTML = "<span class='incorrect-answer'>Incorrect. The correct answer is option '" + correctOption + "'.</span>";
-                answerDiv.classList.add("show");
-                answerDiv.classList.remove("correct-answer");
-            } else {
-                answerDiv.innerHTML = "Please select an answer.";
-                answerDiv.classList.add("show");
-                answerDiv.classList.remove("correct-answer");
-                answerDiv.classList.remove("incorrect-answer");
-            }
+            intervals.push({
+                t_high: t_high,
+                t_low: t_low,
+                delta_h: (t_high - t_low) * (sum_cp_cold - sum_cp_hot)
+            });
         }
-    </script>
+
+        let heat_cascade = [0];
+        for (let i = 0; i < intervals.length; i++) {
+            heat_cascade.push(heat_cascade[i] + intervals[i].delta_h);
+        }
+        
+        const Qh_min = Math.max(...heat_cascade.map(h => -h));
+        const corrected_cascade = heat_cascade.map(h => h + Qh_min);
+        const Qc_min = corrected_cascade[corrected_cascade.length - 1];
+
+        let pinch_index = corrected_cascade.findIndex(h => h === 0);
+        let pinch_temp_shifted = sortedTemps[pinch_index];
+        let pinch_temp_hot = pinch_temp_shifted + deltaT_min / 2;
+        let pinch_temp_cold = pinch_temp_shifted - deltaT_min / 2;
+
+
+        const resultDiv = document.getElementById('pinch_result');
+        resultDiv.innerHTML = `
+            Minimum Hot Utility (Q<sub>H,min</sub>): ${Qh_min.toFixed(2)} kW<br>
+            Minimum Cold Utility (Q<sub>C,min</sub>): ${Qc_min.toFixed(2)} kW<br>
+            Pinch Temperature: ${pinch_temp_hot.toFixed(2)} °C (Hot) / ${pinch_temp_cold.toFixed(2)} °C (Cold)
+        `;
+        resultDiv.style.display = 'block';
+    }
+
+</script>
+
 </body>
 </html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heat Exchangers and Heat Exchanger Networks</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        .section {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .interactive-diagram {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+            position: relative; /* For potential absolute positioning of interactive elements */
+        }
+        .quiz-question {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .quiz-answer {
+            display: none;
+            margin-top: 5px;
+            padding: 8px;
+            border-left: 3px solid #5cb85c;
+            background-color: #e6ffe6;
+            border-radius: 0 4px 4px 0;
+        }
+        .correct-answer {
+            color: green;
+        }
+        .incorrect-answer {
+            color: red;
+        }
+        .show {
+            display: block;
+        }
+        .resource-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+        /* Basic styling for potential interactive elements */
+        .clickable {
+            cursor: pointer;
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Heat Exchangers and Heat Exchanger Networks</h1>
+
+    <div class="section">
+        <h2>Part 1: Heat Exchangers</h2>
+        <p>Heat exchangers are devices used to transfer thermal energy (heat) between two or more fluids without allowing them to mix. They are crucial components in many chemical processes for heating, cooling, condensation, and vaporization.</p>
+
+        <h3>Common Types of Heat Exchangers</h3>
+        <ul>
+            <li><strong>Shell-and-Tube Heat Exchangers:</strong> The most common type, consisting of a bundle of tubes within a cylindrical shell. One fluid flows through the tubes, and the other flows over the tubes within the shell. <span class="clickable" onclick="showDescription('shell_tube')">[Learn More]</span></li>
+            <li id="shell_tube_desc" style="display:none;">Shell-and-tube exchangers are robust and can handle high pressures and temperatures. They are relatively easy to clean mechanically. <a href="https://en.wikipedia.org/wiki/Shell_and_tube_heat_exchanger" target="_blank" class="resource-link">Wikipedia</a></li>
+            <li><strong>Plate Heat Exchangers:</strong> Consist of a series of thin, corrugated metal plates packed together. Fluids flow between the plates, allowing for efficient heat transfer due to the large surface area and turbulent flow. <span class="clickable" onclick="showDescription('plate')">[Learn More]</span></li>
+            <li id="plate_desc" style="display:none;">Plate exchangers are compact and offer high heat transfer coefficients. They are often used in applications with clean fluids. <a href="https://en.wikipedia.org/wiki/Plate_heat_exchanger" target="_blank" class="resource-link">Wikipedia</a></li>
+            <li><strong>Double Pipe Heat Exchangers:</strong> The simplest form, with one pipe placed concentrically inside another. One fluid flows through the inner pipe, and the other flows in the annulus between the pipes. <span class="clickable" onclick="showDescription('double_pipe')">[Learn More]</span></li>
+            <li id="double_pipe_desc" style="display:none;">Double pipe exchangers are suitable for small heat transfer areas and can handle high pressures. <a href="https://www.thermopedia.com/content/765/" target="_blank" class="resource-link">Thermopedia</a></li>
+            <li><strong>Air-Cooled Heat Exchangers:</strong> Use ambient air to cool a process fluid flowing through finned tubes. A fan forces air across the tubes to remove heat. <span class="clickable" onclick="showDescription('air_cooled')">[Learn More]</span></li>
+            <li id="air_cooled_desc" style="display:none;">Air-cooled exchangers are used when water is scarce or cooling water treatment is costly. <a href="https://en.wikipedia.org/wiki/Air-cooled_heat_exchanger" target="_blank" class="resource-link">Wikipedia</a></li>
+        </ul>
+
+        <h3>Interactive Diagram: Shell-and-Tube Heat Exchanger</h3>
+        <div class="interactive-diagram">
+            <p><em>(Interactive diagram of a shell-and-tube heat exchanger will be placed here. Students should be able to hover over or click on components like the shell, tubes, baffles, inlet/outlet ports to see descriptions.)</em></p>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Shell_and_tube_heat_exchanger.svg/800px-Shell_and_tube_heat_exchanger.svg.png" alt="Shell and Tube Heat Exchanger Diagram" width="600">
+            <p style="font-size: small; color: #777;">(Static image as a placeholder for the interactive version)</p>
+            </div>
+
+        <h3>Fundamental Principles</h3>
+        <p>Heat transfer in exchangers primarily occurs through convection and conduction. The rate of heat transfer ($Q$) is governed by the overall heat transfer coefficient ($U$), the heat transfer area ($A$), and the log mean temperature difference ($\Delta T_{LM}$):</p>
+        <p style="text-align: center;">$Q = U \cdot A \cdot \Delta T_{LM}$</p>
+        <p>Understanding how to calculate these parameters is crucial for designing and analyzing heat exchangers.</p>
+
+        <div class="quiz-question">
+            <strong>Quick Quiz:</strong> What is the primary purpose of a heat exchanger?
+            <br>
+            <label><input type="radio" name="q1" value="a"> To mix two fluids.</label><br>
+            <label><input type="radio" name="q1" value="b"> To transfer heat between two fluids without mixing.</label><br>
+            <label><input type="radio" name="q1" value="c"> To increase the pressure of a fluid.</label><br>
+            <button onclick="checkAnswer('q1', 'b', 'answer1')">Check Answer</button>
+            <div id="answer1" class="quiz-answer"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Part 2: Heat Exchanger Networks (HENs)</h2>
+        <p>A Heat Exchanger Network (HEN) is an integrated system of multiple heat exchangers designed to maximize energy recovery by transferring heat between different process streams. The goal is to reduce the utility (heating and cooling) requirements of the overall process, leading to significant cost savings and environmental benefits.</p>
+
+        <h3>The Concept of Energy Recovery</h3>
+        <p>In many chemical processes, some streams need to be cooled down while others need to be heated up. Instead of using external utilities (like steam or cooling water) for these tasks independently, a HEN aims to use the hot streams to heat the cold streams, and vice versa.</p>
+
+        <h3>Pinch Analysis</h3>
+        <p>Pinch analysis is a powerful methodology used to design and analyze HENs. It involves determining the "pinch point," which is the temperature at which the heat flow is most constrained. This helps in identifying the minimum utility requirements and designing an efficient network.</p>
+
+        <div class="interactive-diagram">
+            <p><em>(Interactive T-H diagram illustrating composite curves and the pinch point will be placed here. Students should be able to see how the minimum heating and cooling utilities are determined.)</em></p>
+            <img src="https://www.che.udel.edu/pdf/senior_design/fall07/ammonia/Figures/TH-diagram.png" alt="Temperature-Enthalpy Diagram" width="500">
+            <p style="font-size: small; color: #777;">(Static example of a T-H diagram)</p>
+            </div>
+
+        <h3>Benefits of Heat Exchanger Networks</h3>
+        <ul>
+            <li>Reduced energy consumption and utility costs.</li>
+            <li>Lower greenhouse gas emissions.</li>
+            <li>Improved process efficiency.</li>
+            <li>Better integration and understanding of the overall process.</li>
+        </ul>
+
+        <div class="quiz-question">
+            <strong>Quick Quiz:</strong> What is the primary goal of a Heat Exchanger Network (HEN)?
+            <br>
+            <label><input type="radio" name="q2" value="a"> To maximize the mixing of process streams.</label><br>
+            <label><input type="radio" name="q2" value="b"> To minimize the temperature difference in heat exchangers.</label><br>
+            <label><input type="radio" name="q2" value="c"> To maximize energy recovery and minimize utility usage.</label><br>
+            <button onclick="checkAnswer('q2', 'c', 'answer2')">Check Answer</button>
+            <div id="answer2" class="quiz-answer"></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Further Resources</h2>
+        <ul>
+            <li><a href="https://www.cheresources.com/heattransfer.shtml" target="_blank" class="resource-link">Cheresources - Heat Transfer Engineering Resources</a></li>
+            <li>Your course materials and recommended textbooks (e.g., Towler & Sinnott, Seider et al.).</li>
+            <li>Online simulation tools (if applicable in your course).</li>
+        </ul>
+    </div>
+
+    <script>
+        function showDescription(id) {
+            var desc = document.getElementById(id + "_desc");
+            if (desc.style.display === "none") {
+                desc.style.display = "block";
+            } else {
+                desc.style.display = "none";
+            }
+        }
+
+        function checkAnswer(questionId, correctOption, answerDivId) {
+            var radios = document.getElementsByName(questionId);
+            var answerDiv = document.getElementById(answerDivId);
+            var userAnswer = null;
+
+            for (var i = 0; i < radios.length; i++) {
+                if (radios [i].checked) {
+                    userAnswer = radios [i].value;
+                    break;
+                }
+            }
+
+            if (userAnswer === correctOption) {
+                answerDiv.innerHTML = "<span class='correct-answer'>Correct!</span>";
+                answerDiv.classList.add("show");
+                answerDiv.classList.remove("incorrect-answer");
+            } else if (userAnswer) {
+                answerDiv.innerHTML = "<span class='incorrect-answer'>Incorrect. The correct answer is option '" + correctOption + "'.</span>";
+                answerDiv.classList.add("show");
+                answerDiv.classList.remove("correct-answer");
+            } else {
+                answerDiv.innerHTML = "Please select an answer.";
+                answerDiv.classList.add("show");
+                answerDiv.classList.remove("correct-answer");
+                answerDiv.classList.remove("incorrect-answer");
+            }
+        }
+    </script>
+</body>
+</html>
